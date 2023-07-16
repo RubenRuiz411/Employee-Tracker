@@ -7,11 +7,7 @@ const connection = mysql.createConnection({
   database: 'employees_db',
 });
 
-
-
-
-function startPrompt() {
-  const inQquestions = [{
+const inQquestions = [{
     type: "list",
     name: "action",
     message: "What would you like to do?",
@@ -28,20 +24,34 @@ function startPrompt() {
     // "Delete Role", 
     // "Delete Employee", 
     // "View Total Utilized Budget of Department", 
-    "QUIT"]
-  }]
-  
+   "QUIT"]
+}]
+const addEmployeeQuestions = [
+  {
+    type: 'list',
+    name: 'role_id',
+    choices: ["Sales Lead", "Salesperson", "Lead Engineer","Software Engineer", "Account Manager", "Accountant", "Legal Team Lead", "Lawyer"],
+    message: "what is the employee's role?",
+  },
+  {
+    type: 'input',
+    name: 'manager_id',
+    message: "who is the employee's manager? (enter manager ID or NULL)",
+  },
+];    
+
+function startPrompt() {
+
   inquier.prompt(inQquestions)
   .then(response => {
     if(response.action === "View All Employees") {
         viewEmployees()
     } else if (response.action === "View All Roles") {
-        // call view all roles function
+        viewRoles()
     } else if (response.action === "View All Departments") {
-        // call departments function
         viewDepartments()
     } else if (response.action === "Add Employee") {
-        // add employee funciton
+        addEmployee()
     } else if (response.action === "Add Role") {
         // add role
     } else if (response.action === "Add Department") {
@@ -59,6 +69,19 @@ function startPrompt() {
 startPrompt();
 
 
+function viewEmployees() {
+    connection.query("SELECT * FROM employee", function(error, data){
+        console.table(data)
+        startPrompt()
+    })
+}
+
+function viewRoles() {
+    connection.query("SELECT * FROM role", function(error, data){
+        console.table(data)
+        startPrompt()
+    })
+}
 
 function viewDepartments() {
     connection.query("SELECT * FROM Department", function(error, data){
@@ -68,12 +91,36 @@ function viewDepartments() {
 }
 
 
-function viewEmployees() {
-    connection.query("SELECT * FROM employee", function(error, data){
-        console.table(data)
-        startPrompt()
+
+
+function addEmployee(){
+     inquier.prompt(
+        [
+            {
+                type: "input",
+                name: "first_name",
+                message: "what is the employee's first name?"
+              },
+              {
+                type: "input",
+                name: "last_name",
+                message: "what is the employee's last name?"
+              },
+
+        ]),
+    function employeeRoleandManager(){
+        inquier.prompt(addEmployeeQuestions)        
+    }
+    const roleandManager = employeeRoleandManager(data)
+    .then(function(res){
+        connection.query("INSERT into employee (name) values(?)", [res.first_name, res.last_name, roleandManager.name_id, roleandManager.manager_id],function(error,data){
+            console.table(data)
+            startPrompt()
+        })
     })
 }
+
+
 
 function addDepartment(){
     inquier.prompt(
@@ -92,6 +139,30 @@ function addDepartment(){
         })
     })
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // function updateEmployeerole(){
 //     inquier.prompt(
