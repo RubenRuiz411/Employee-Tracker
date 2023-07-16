@@ -26,19 +26,8 @@ const inQquestions = [{
     // "View Total Utilized Budget of Department", 
    "QUIT"]
 }]
-const addEmployeeQuestions = [
-  {
-    type: 'list',
-    name: 'role_id',
-    choices: ["Sales Lead", "Salesperson", "Lead Engineer","Software Engineer", "Account Manager", "Accountant", "Legal Team Lead", "Lawyer"],
-    message: "what is the employee's role?",
-  },
-  {
-    type: 'input',
-    name: 'manager_id',
-    message: "who is the employee's manager? (enter manager ID or NULL)",
-  },
-];    
+
+
 
 function startPrompt() {
 
@@ -106,14 +95,25 @@ function addEmployee(){
                 name: "last_name",
                 message: "what is the employee's last name?"
               },
+              {
+                type: 'list',
+                name: 'role_id',
+                choices: ["Sales Lead", "Salesperson", "Lead Engineer","Software Engineer", "Account Manager", "Accountant", "Legal Team Lead", "Lawyer"],
+                message: "what is the employee's role?",
+              },
+              {
+                type: 'input',
+                name: 'manager_id',
+                message: "who is the employee's manager? (enter manager ID or NULL)",
+              }
+              
 
-        ]),
-    function employeeRoleandManager(){
-        inquier.prompt(addEmployeeQuestions)        
-    }
-    const roleandManager = employeeRoleandManager(data)
+        ])
+        
+            
+    
     .then(function(res){
-        connection.query("INSERT into employee (name) values(?)", [res.first_name, res.last_name, roleandManager.name_id, roleandManager.manager_id],function(error,data){
+        connection.query("INSERT into employee (name) values(?)", [res.first_name, res.last_name, res.name_id, res.manager_id],function(error,data){
             console.table(data)
             startPrompt()
         })
