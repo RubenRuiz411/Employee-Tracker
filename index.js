@@ -147,10 +147,10 @@ function addRole() {
       {
         type: 'list',
         name: 'roleDepartment',
-        choices: departments.map((department) => department.title),
+        choices: departments.map((department) => department.name),
         message: 'What Department is the name of this new in?',
         filter: function (choice) {
-          return departments.find((department) => department.title === choice).id;
+          return departments.find((department) => department.name === choice).id;
         
         // choices: ['Engineering', 'Finance', 'Legal', 'Sales'],
         // filter: function (choice) {
