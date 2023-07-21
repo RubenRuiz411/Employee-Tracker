@@ -38,9 +38,6 @@ N/A
 
 UCLA Extension Full Stack Bootcamp Instructor, T.A. and provided tutors.
 
-[How to create a Professional README](https://coding-boot-camp.github.io/full-stack/github/professional-readme-guide)
-
-
 ## License
 
 Copyright 2021 Ruben Ruiz 
