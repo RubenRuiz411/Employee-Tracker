@@ -1,15 +1,19 @@
+//requires mysql
 const mysql = require('mysql2');
+//requires inquire package
 const inquier = require('inquirer');
+//geenerates logo
 const logo = require('asciiart-logo');
 const config = require('./package.json');
 console.log(logo(config).render());
+//connects to sql database
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
   database: 'employees_db',
 });
-
+// inquire questions for tasks
 const inQquestions = [
   {
     type: 'list',
@@ -27,7 +31,7 @@ const inQquestions = [
     ],
   },
 ];
-
+//prompts inquire questions for tasks
 function startPrompt() {
   inquier
     .prompt(inQquestions)
@@ -55,28 +59,28 @@ function startPrompt() {
     });
 }
 startPrompt();
-
+//function to view all employees
 function viewEmployees() {
   connection.query('SELECT * FROM employee', function (error, data) {
     console.table(data);
     startPrompt();
   });
 }
-
+//function to view all roles
 function viewRoles() {
   connection.query('SELECT * FROM role', function (error, data) {
     console.table(data);
     startPrompt();
   });
 }
-
+//function to view departments
 function viewDepartments() {
   connection.query('SELECT * FROM Department', function (error, data) {
     console.table(data);
     startPrompt();
   });
 }
-
+//function to add employees
 function addEmployee() {
   connection.query('SELECT * FROM role', function (error, roles) {
     inquier
@@ -129,7 +133,7 @@ function addEmployee() {
       });
   });
 }
-
+//function to add a role
 function addRole() {
     connection.query('SELECT * FROM department', function (error, departments){
   inquier
@@ -151,18 +155,9 @@ function addRole() {
         message: 'What Department is the name of this new in?',
         filter: function (choice) {
           return departments.find((department) => department.name === choice).id;
-        
-        // choices: ['Engineering', 'Finance', 'Legal', 'Sales'],
-        // filter: function (choice) {
-        //   if (choice === 'Engineering') return 1;
-        //   if (choice === 'Finance') return 2;
-        //   if (choice === 'Legal') return 3;
-        //   if (choice === 'Sales') return 4;
-        // },
     },
 },
-])    
-    
+])  
     .then(function (res) {
       const newRole = {
         title: res.roleTitle,
@@ -179,7 +174,7 @@ function addRole() {
     });
   });
 }
-
+//function to add department 
 function addDepartment() {
   inquier
     .prompt([
@@ -200,7 +195,7 @@ function addDepartment() {
       );
     });
 }
-
+//function to update empoyee role
 function updateEmployeerole() {
   inquier
     .prompt([

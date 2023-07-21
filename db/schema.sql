@@ -1,15 +1,15 @@
+/* deletes database if exists then creates new database */ 
 DROP DATABASE IF EXISTS employees_db;
 CREATE DATABASE employees_db;
-
+/* focuses tasks on database */ 
 USE employees_db;
-
+/* creates table for department */ 
 CREATE TABLE department (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(30)
 
 );
-
-
+/* creates table for role*/
 CREATE TABLE role (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30) NOT NULL,
@@ -19,9 +19,7 @@ CREATE TABLE role (
         REFERENCES department(id)
         ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-
-
+/* creates table for employees */
 CREATE TABLE employee (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(30) NOT NULL,
